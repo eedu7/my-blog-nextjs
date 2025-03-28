@@ -1,3 +1,5 @@
+"use client";
+
 import { useForm } from "@tanstack/react-form";
 import { SignInFormSchema } from "../schemas/sign-in-schema";
 

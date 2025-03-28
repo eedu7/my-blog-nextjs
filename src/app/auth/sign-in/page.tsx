@@ -3,9 +3,7 @@
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
-import { useForm } from "@tanstack/react-form";
 import { LoaderCircle } from "lucide-react";
-import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,32 +18,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SIGN_UP_LINK } from "@/data/navigation-links";
 import { AuthCardConsentParagrapht } from "@/modules/authentication/components/auth-card-consent";
-import { Metadata } from "next";
+import { useReactForm } from "@/modules/authentication/hooks/useReactForm";
 
-export const metadata: Metadata = {
-    title: "Sign in",
-};
-
-const SignInFormSchema = z.object({
-    email: z.string().email(),
-    password: z
-        .string()
-        .min(8, "Password must be at least 8 characters long.")
-        .max(18, "Password must be at most 18 characters long."),
-});
 const SignInPage = () => {
-    const form = useForm({
-        defaultValues: {
-            email: "",
-            password: "",
-        },
-        validators: {
-            onChange: SignInFormSchema,
-        },
-        onSubmit: ({ value }) => {
-            alert(JSON.stringify(value));
-        },
-    });
+    const { loginForm } = useReactForm();
     return (
         <Card className="md:w-96">
             <CardHeader>
@@ -62,7 +38,7 @@ const SignInPage = () => {
                     }}
                     className="space-y-4"
                 >
-                    <form.Field
+                    <loginForm.Field
                         name="email"
                         // eslint-disable-next-line react/no-children-prop
                         children={(field) => (
@@ -96,7 +72,7 @@ const SignInPage = () => {
                             </div>
                         )}
                     />
-                    <form.Field
+                    <loginForm.Field
                         name="password"
                         // eslint-disable-next-line react/no-children-prop
                         children={(field) => (
@@ -137,7 +113,7 @@ const SignInPage = () => {
                     <Button
                         variant="outline"
                         className="w-full cursor-pointer"
-                        onClick={() => form.handleSubmit()}
+                        onClick={() => loginForm.handleSubmit()}
                     >
                         Sign In
                     </Button>
