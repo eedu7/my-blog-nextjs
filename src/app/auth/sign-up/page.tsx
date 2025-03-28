@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SIGN_IN_LINK } from "@/data/navigation-links";
 import { AuthCardConsentParagrapht } from "@/modules/authentication/components/auth-card-consent";
+import { useReactForm } from "@/modules/authentication/hooks/useReactForm";
 
 const checkUsernameExists = async (username: string) => {
     // TODO: add code from this https://github.com/eedu7/my-blog/blob/main/frontend/src/app/(auth)/sign-up/page.tsx
@@ -34,31 +35,8 @@ const checkEmailExists = async (email: string) => {
     }
 };
 
-const SignUpFormSchema = z.object({
-    username: z
-        .string()
-        .min(3, "Username must be at least 3 characters long.")
-        .max(12, "Username must not exceed 12 characters."),
-    email: z.string().email(),
-    password: z
-        .string()
-        .min(8, "Password must be at least 8 characters long.")
-        .max(18, "Password must be at most 18 characters long."),
-});
 const SignUpPage = () => {
-    const form = useForm({
-        defaultValues: {
-            username: "",
-            email: "",
-            password: "",
-        },
-        validators: {
-            onChange: SignUpFormSchema,
-        },
-        onSubmit: ({ value }) => {
-            alert(JSON.stringify(value));
-        },
-    });
+    const { registerForm } = useReactForm();
     return (
         <Card className="m-2 md:w-96">
             <CardHeader>
@@ -75,7 +53,7 @@ const SignUpPage = () => {
                     }}
                     className="space-y-4"
                 >
-                    <form.Field
+                    <registerForm.Field
                         name="username"
                         validators={{
                             onChangeAsync: async ({ value }) => {
@@ -119,7 +97,7 @@ const SignUpPage = () => {
                             </div>
                         )}
                     />
-                    <form.Field
+                    <registerForm.Field
                         name="email"
                         validators={{
                             onChangeAsync: async ({ value }) => {
@@ -163,7 +141,7 @@ const SignUpPage = () => {
                             </div>
                         )}
                     />
-                    <form.Field
+                    <registerForm.Field
                         name="password"
                         // eslint-disable-next-line react/no-children-prop
                         children={(field) => (
@@ -204,7 +182,7 @@ const SignUpPage = () => {
                     <Button
                         variant="outline"
                         className="w-full cursor-pointer"
-                        onClick={() => form.handleSubmit()}
+                        onClick={() => registerForm.handleSubmit()}
                     >
                         Sign Up
                     </Button>
