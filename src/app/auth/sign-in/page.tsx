@@ -1,7 +1,151 @@
-import React from "react";
+"use client";
 
+import Link from "next/link";
+
+import { cn } from "@/lib/utils";
+import { useForm } from "@tanstack/react-form";
+import { LoaderCircle } from "lucide-react";
+import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { SIGN_UP_LINK } from "@/data/navigation-links";
+import { AuthCardConsentParagrapht } from "@/modules/authentication/components/auth-card-consent";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Sign in",
+};
+
+const SignInFormSchema = z.object({
+    email: z.string().email(),
+    password: z
+        .string()
+        .min(8, "Password must be at least 8 characters long.")
+        .max(18, "Password must be at most 18 characters long."),
+});
 const SignInPage = () => {
-	return <div>SignInPage</div>;
+    const form = useForm({
+        defaultValues: {
+            email: "",
+            password: "",
+        },
+        validators: {
+            onChange: SignInFormSchema,
+        },
+        onSubmit: ({ value }) => {
+            alert(JSON.stringify(value));
+        },
+    });
+    return (
+        <Card className="md:w-96">
+            <CardHeader>
+                <CardTitle>Welcome Back!</CardTitle>
+                <CardDescription>
+                    Sign in to continue reading and writing on MyBlog.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }}
+                    className="space-y-4"
+                >
+                    <form.Field
+                        name="email"
+                        // eslint-disable-next-line react/no-children-prop
+                        children={(field) => (
+                            <div className="space-y-2">
+                                <Label>Email</Label>
+                                <div className="relative">
+                                    <Input
+                                        onBlur={field.handleBlur}
+                                        onChange={(e) => field.handleChange(e.target.value)}
+                                        type="text"
+                                        className={cn(
+                                            "focus:outline-none",
+                                            field.state.meta.errors.length > 0 && "border-red-500",
+                                        )}
+                                        placeholder="Email"
+                                    />
+                                    {field.state.meta.isValidating && (
+                                        <div className="absolute top-1/2 right-6 -translate-y-1/2 transform">
+                                            <LoaderCircle className="animate-spin text-gray-500" />
+                                        </div>
+                                    )}
+                                    {field.state.meta.errors.length > 0 && (
+                                        <em className="text-xs text-red-500">
+                                            {/* {field.state.meta.errors
+												.map((err) => err?.message)
+												.join(", ")} */}
+                                            {field.state.meta.errors[0]?.message}
+                                        </em>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    />
+                    <form.Field
+                        name="password"
+                        // eslint-disable-next-line react/no-children-prop
+                        children={(field) => (
+                            <div className="space-y-2">
+                                <Label>Password</Label>
+                                <div>
+                                    <Input
+                                        onBlur={field.handleBlur}
+                                        onChange={(e) => field.handleChange(e.target.value)}
+                                        type="password"
+                                        className={cn(
+                                            "focus:outline-none",
+                                            field.state.meta.errors.length > 0 && "border-red-500",
+                                        )}
+                                        placeholder="Password"
+                                    />
+                                    {field.state.meta.errors.length > 0 && (
+                                        <em className="text-xs text-red-500">
+                                            {field.state.meta.errors
+                                                .map((err) => err?.message)
+                                                .join(", ")}
+                                        </em>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    />
+                </form>
+            </CardContent>
+            <CardFooter>
+                <div className="flex w-full flex-col space-y-2">
+                    <div className="w-full">
+                        {/* TODO: Do not use hard coded value, make a varialbe */}
+                        <Link className="float-end text-xs text-blue-800" href={SIGN_UP_LINK.href}>
+                            Don&apos;t have an account? Register here
+                        </Link>
+                    </div>
+                    <Button
+                        variant="outline"
+                        className="w-full cursor-pointer"
+                        onClick={() => form.handleSubmit()}
+                    >
+                        Sign In
+                    </Button>
+                    <AuthCardConsentParagrapht />
+                </div>
+            </CardFooter>
+        </Card>
+    );
 };
 
 export default SignInPage;

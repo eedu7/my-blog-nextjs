@@ -1,8 +1,13 @@
 "use client";
 
-import React from "react";
+import Link from "next/link";
+
+import { cn } from "@/lib/utils";
+import { useForm } from "@tanstack/react-form";
+import { LoaderCircle } from "lucide-react";
 import { z } from "zod";
 
+import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
@@ -11,13 +16,10 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { useForm } from "@tanstack/react-form";
-import Link from "next/link";
-import { Divide, LoaderCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { SIGN_IN_LINK } from "@/data/navigation-links";
+import { AuthCardConsentParagrapht } from "@/modules/authentication/components/auth-card-consent";
 
 const checkUsernameExists = async (username: string) => {
     // TODO: add code from this https://github.com/eedu7/my-blog/blob/main/frontend/src/app/(auth)/sign-up/page.tsx
@@ -44,17 +46,6 @@ const SignUpFormSchema = z.object({
         .max(18, "Password must be at most 18 characters long."),
 });
 const SignUpPage = () => {
-    const SIGN_IN_LINK = {
-        href: "/auth/sign-in",
-    };
-    const TERMS_LINK = {
-        href: "/auth/sign-in",
-    };
-
-    const PRIVACY_LINK = {
-        href: "/auth/sign-in",
-    };
-
     const form = useForm({
         defaultValues: {
             username: "",
@@ -69,10 +60,12 @@ const SignUpPage = () => {
         },
     });
     return (
-        <Card className="md:w-96">
+        <Card className="m-2 md:w-96">
             <CardHeader>
-                <CardTitle>Create Your Account</CardTitle>
-                <CardDescription>Join us today.</CardDescription>
+                <CardTitle>Create an Account</CardTitle>
+                <CardDescription>
+                    Join MyBlog today and start sharing your thoughts!
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 <form
@@ -204,8 +197,8 @@ const SignUpPage = () => {
                 <div className="flex w-full flex-col space-y-2">
                     <div className="w-full">
                         {/* TODO: Do not use hard coded value, make a varialbe */}
-                        <Link className="float-end text-sm text-blue-800" href={SIGN_IN_LINK.href}>
-                            Already have an account? Sign in
+                        <Link className="float-end text-xs text-blue-800" href={SIGN_IN_LINK.href}>
+                            Already have an account? Log in
                         </Link>
                     </div>
                     <Button
@@ -215,25 +208,7 @@ const SignUpPage = () => {
                     >
                         Sign Up
                     </Button>
-                    <div>
-                        <p className="text-[0.8rem] text-gray-600">
-                            Click &quot;Register&quot; to agree to MyBlog&apos;s{" "}
-                            <Link
-                                className="text-blue-800 underline underline-offset-2"
-                                href={TERMS_LINK.href}
-                            >
-                                Terms of Service
-                            </Link>{" "}
-                            and acknowledge that MyBlog&apos;s{" "}
-                            <Link
-                                className="text-blue-800 underline underline-offset-2"
-                                href={PRIVACY_LINK.href}
-                            >
-                                Privacy Policy
-                            </Link>{" "}
-                            applies to you.
-                        </p>
-                    </div>
+                    <AuthCardConsentParagrapht />
                 </div>
             </CardFooter>
         </Card>
