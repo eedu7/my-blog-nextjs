@@ -1,6 +1,10 @@
 import { axiosClient } from "@/service/api";
-import { LoginUserRequest, RegisterUserRequest } from "./auth.types";
-import axios from "axios";
+import {
+    CheckUserExistRequest,
+    CheckUserExistResponse,
+    LoginUserRequest,
+    RegisterUserRequest,
+} from "./auth.types";
 
 export const registerUser = async (data: RegisterUserRequest) => {
     try {
@@ -21,12 +25,16 @@ export const loginUser = async (data: LoginUserRequest) => {
 };
 
 // TODO: Make a hook for this
-export const checkUserExist = async (field: string, value: string) => {
+export const checkUserExist = async ({
+    field,
+    value,
+}: CheckUserExistRequest): Promise<CheckUserExistResponse | null> => {
     try {
         const response = await axiosClient.get(`/v1/users/exist/?${field}=${value}`);
         if (response.data.exist) {
-            return { message: `${field} already exists.` };
+            return response.data;
         }
+        return null;
     } catch (error) {
         console.error("Error in checking the user!", error);
         throw new Error("Error in checking the user");

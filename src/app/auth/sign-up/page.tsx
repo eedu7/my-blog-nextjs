@@ -43,11 +43,11 @@ const SignUpPage = () => {
                         name="username"
                         validators={{
                             onChangeAsync: async ({ value }) => {
-                                return await checkUserExist("username", value);
+                                return await checkUserExist({ field: "username", value: value });
                             },
                             onChangeAsyncDebounceMs: 500,
                             onBlurAsync: async ({ value }) => {
-                                return await checkUserExist("username", value);
+                                return await checkUserExist({ field: "username", value: value });
                             },
                             onBlurAsyncDebounceMs: 500,
                         }}
@@ -87,11 +87,11 @@ const SignUpPage = () => {
                         name="email"
                         validators={{
                             onChangeAsync: async ({ value }) => {
-                                return await checkUserExist("email", value);
+                                return await checkUserExist({ field: "email", value: value });
                             },
                             onChangeAsyncDebounceMs: 500,
                             onBlurAsync: async ({ value }) => {
-                                return await checkUserExist("email", value);
+                                return await checkUserExist({ field: "email", value: value });
                             },
                             onBlurAsyncDebounceMs: 500,
                         }}
