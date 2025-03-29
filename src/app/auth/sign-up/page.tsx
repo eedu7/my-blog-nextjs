@@ -3,9 +3,7 @@
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
-import { useForm } from "@tanstack/react-form";
 import { LoaderCircle } from "lucide-react";
-import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,21 +17,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SIGN_IN_LINK } from "@/data/navigation-links";
+import { checkUserExist } from "@/modules/authentication/api/auth.api";
 import { AuthCardConsentParagrapht } from "@/modules/authentication/components/auth-card-consent";
 import { useReactForm } from "@/modules/authentication/hooks/useReactForm";
-
-const checkUsernameExists = async (username: string) => {
-    // TODO: add code from this https://github.com/eedu7/my-blog/blob/main/frontend/src/app/(auth)/sign-up/page.tsx
-    if (["tony", "batman", "clark"].includes(username)) {
-        return { message: "Username already exists" };
-    }
-};
-const checkEmailExists = async (email: string) => {
-    // TODO: add code from this https://github.com/eedu7/my-blog/blob/main/frontend/src/app/(auth)/sign-up/page.tsx
-    if (["tony@example.com", "batman@example.com", "clark@example.com"].includes(email)) {
-        return { message: "Email already exists" };
-    }
-};
 
 const SignUpPage = () => {
     const { registerForm } = useReactForm();
@@ -57,11 +43,11 @@ const SignUpPage = () => {
                         name="username"
                         validators={{
                             onChangeAsync: async ({ value }) => {
-                                return await checkUsernameExists(value);
+                                return await checkUserExist("username", value);
                             },
                             onChangeAsyncDebounceMs: 500,
                             onBlurAsync: async ({ value }) => {
-                                return await checkUsernameExists(value);
+                                return await checkUserExist("username", value);
                             },
                             onBlurAsyncDebounceMs: 500,
                         }}
@@ -101,11 +87,11 @@ const SignUpPage = () => {
                         name="email"
                         validators={{
                             onChangeAsync: async ({ value }) => {
-                                return await checkEmailExists(value);
+                                return await checkUserExist("email", value);
                             },
                             onChangeAsyncDebounceMs: 500,
                             onBlurAsync: async ({ value }) => {
-                                return await checkEmailExists(value);
+                                return await checkUserExist("email", value);
                             },
                             onBlurAsyncDebounceMs: 500,
                         }}
