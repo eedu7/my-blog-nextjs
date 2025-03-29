@@ -2,8 +2,10 @@
 
 import { useForm } from "@tanstack/react-form";
 import { SignInFormSchema, SignUpFormSchema } from "../schemas/form-schemas";
+import { useAuth } from "./useAuth";
 
 export const useReactForm = () => {
+    const { login, register } = useAuth();
     const loginForm = useForm({
         defaultValues: {
             email: "",
@@ -12,8 +14,8 @@ export const useReactForm = () => {
         validators: {
             onChange: SignInFormSchema,
         },
-        onSubmit: ({ value }) => {
-            alert(JSON.stringify(value));
+        onSubmit: async ({ value }) => {
+            return await login.mutateAsync(value);
         },
     });
     const registerForm = useForm({
@@ -25,8 +27,8 @@ export const useReactForm = () => {
         validators: {
             onChange: SignUpFormSchema,
         },
-        onSubmit: ({ value }) => {
-            alert(JSON.stringify(value));
+        onSubmit: async ({ value }) => {
+            return await register.mutateAsync(value);
         },
     });
 
