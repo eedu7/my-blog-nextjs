@@ -3,9 +3,11 @@
 import { useForm } from "@tanstack/react-form";
 import { SignInFormSchema, SignUpFormSchema } from "../schemas/form-schemas";
 import { useAuth } from "./useAuth";
+import { useRouter } from "next/navigation";
 
 export const useReactForm = () => {
     const { login, register } = useAuth();
+    const router = useRouter();
     const loginForm = useForm({
         defaultValues: {
             email: "",
@@ -15,7 +17,8 @@ export const useReactForm = () => {
             onChange: SignInFormSchema,
         },
         onSubmit: async ({ value }) => {
-            return await login.mutateAsync(value);
+            await login.mutateAsync(value);
+            router.push("/");
         },
     });
     const registerForm = useForm({
@@ -28,7 +31,8 @@ export const useReactForm = () => {
             onChange: SignUpFormSchema,
         },
         onSubmit: async ({ value }) => {
-            return await register.mutateAsync(value);
+            await register.mutateAsync(value);
+            router.push("/");
         },
     });
 

@@ -73,9 +73,6 @@ const SignUpPage = () => {
                                     )}
                                     {field.state.meta.errors.length > 0 && (
                                         <em className="text-xs text-red-500">
-                                            {/* {field.state.meta.errors
-                                                .map((err) => err?.message)
-                                                .join(", ")} */}
                                             {field.state.meta.errors[0]?.message}
                                         </em>
                                     )}
@@ -117,9 +114,6 @@ const SignUpPage = () => {
                                     )}
                                     {field.state.meta.errors.length > 0 && (
                                         <em className="text-xs text-red-500">
-                                            {/* {field.state.meta.errors
-                                                .map((err) => err?.message)
-                                                .join(", ")} */}
                                             {field.state.meta.errors[0]?.message}
                                         </em>
                                     )}
@@ -166,7 +160,7 @@ const SignUpPage = () => {
                         </Link>
                     </div>
                     <Button
-                        variant="outline"
+                        variant="default"
                         className="w-full cursor-pointer"
                         onClick={() => registerForm.handleSubmit()}
                     >
