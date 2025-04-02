@@ -1,0 +1,21 @@
+#toggle {
+    display: none;
+}
+
+#search-input[type="text"] {
+    outline: none;
+    max-width: 0;
+    min-width: 0;
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+#toggle:checked ~ #search-input {
+    max-width: 256px;
+    opacity: 1;
+}
+
+#toggle:checked ~ .search-icon {
+    color: black;
+}

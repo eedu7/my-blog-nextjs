@@ -2,7 +2,7 @@
 
 import { getCookie } from "cookies-next/client";
 import Link from "next/link";
-import { BellIcon, BookMarkedIcon, SearchIcon } from "lucide-react";
+import { BellIcon, BookMarkedIcon, Search, SearchIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React from "react";
 import {
@@ -12,9 +12,13 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import "./style.css";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 export const Navbar = () => {
     const [userEmail, setUserEmail] = React.useState<string | null>(null);
+    const [toggle, setToggle] = React.useState<boolean>(false);
 
     React.useEffect(() => {
         setUserEmail(getCookie("_JWT_REFRESH_TOKEN") || null);
@@ -24,9 +28,19 @@ export const Navbar = () => {
         return (
             <nav className="flex items-center space-x-4">
                 {/* TODO: Add links */}
-                <Link href="#" className="cursor-pointer">
-                    <SearchIcon className="size-6 text-gray-400 hover:text-gray-600" />
-                </Link>
+
+                <div className="flex items-center gap-2">
+                    <input type="checkbox" id="toggle" />
+                    <label htmlFor="toggle">
+                        <SearchIcon className="search-icon size-6 text-gray-400 hover:text-gray-600" />
+                    </label>
+                    <input
+                        className="rounded-xl border p-2"
+                        placeholder="Search"
+                        type="text"
+                        id="search-input"
+                    />
+                </div>
                 <Link href="#" className="cursor-pointer">
                     <BookMarkedIcon className="size-6 text-gray-400 hover:text-gray-600" />
                 </Link>
