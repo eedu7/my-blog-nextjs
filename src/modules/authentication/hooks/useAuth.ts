@@ -1,8 +1,10 @@
+"use client";
 import { registerUser } from "./../api/auth.api";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../api/auth.api";
-import { setCookie } from "cookies-next/client";
+import { deleteCookie, setCookie } from "cookies-next/client";
 import { AuthResponse } from "@/modules/authentication/api/auth.types";
+import { useRouter } from "next/navigation";
 
 const saveAuthData = (data: AuthResponse) => {
     setCookie("_JWT_ACCESS_TOKEN", data.token.access_token, {
@@ -29,15 +31,10 @@ const saveAuthData = (data: AuthResponse) => {
         sameSite: "strict",
         maxAge: data.token.expiry_minutes,
     });
-    setCookie("_AUTH_EXPIRE", data.token.expiry_minutes, {
-        secure: true,
-        sameSite: "strict",
-        maxAge: 1,
-    });
 };
 
 export const useAuth = () => {
-    const login = useMutation({
+    const signIn = useMutation({
         mutationFn: loginUser,
         mutationKey: ["loginUser"],
         onSuccess: (data) => {
@@ -48,7 +45,7 @@ export const useAuth = () => {
         },
     });
 
-    const register = useMutation({
+    const signUp = useMutation({
         mutationFn: registerUser,
         mutationKey: ["registerUser"],
         onSuccess: (data) => {
@@ -59,8 +56,17 @@ export const useAuth = () => {
         },
     });
 
+    const signOut = () => {
+        deleteCookie("_JWT_ACCESS_TOKEN");
+        deleteCookie("_JWT_REFRESH_TOKEN");
+        deleteCookie("_AUTH_USER_USERNAME");
+        deleteCookie("_AUTH_USER_EMAIL");
+        deleteCookie("_AUTH_USER_UUID");
+    };
+
     return {
-        login,
-        register,
+        signIn,
+        signUp,
+        signOut,
     };
 };

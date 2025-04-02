@@ -20,6 +20,11 @@ import { SIGN_UP_LINK } from "@/data/navigation-links";
 import { AuthCardConsentParagrapht } from "@/modules/authentication/components/auth-card-consent";
 import { useReactForm } from "@/modules/authentication/hooks/useReactForm";
 
+import { RiGithubFill } from "@remixicon/react";
+
+import { Separator } from "@/components/ui/separator";
+import { signIn } from "next-auth/react";
+
 const SignInPage = () => {
     const { loginForm } = useReactForm();
     return (
@@ -117,6 +122,20 @@ const SignInPage = () => {
                     >
                         Sign In
                     </Button>
+                    <Separator />
+                    <Button
+                        variant="outline"
+                        onClick={() => signIn("github")}
+                        className="cursor-pointer"
+                    >
+                        <RiGithubFill
+                            className="me-1 text-[#333333] dark:text-white/60"
+                            size={16}
+                            aria-hidden="true"
+                        />
+                        Login with GitHub
+                    </Button>
+
                     <AuthCardConsentParagrapht />
                 </div>
             </CardFooter>

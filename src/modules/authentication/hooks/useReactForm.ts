@@ -1,12 +1,9 @@
-"use client";
-
 import { useForm } from "@tanstack/react-form";
 import { SignInFormSchema, SignUpFormSchema } from "../schemas/form-schemas";
-import { useAuth } from "./useAuth";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export const useReactForm = () => {
-    const { login, register } = useAuth();
     const router = useRouter();
     const loginForm = useForm({
         defaultValues: {
@@ -17,7 +14,7 @@ export const useReactForm = () => {
             onChange: SignInFormSchema,
         },
         onSubmit: async ({ value }) => {
-            await login.mutateAsync(value);
+            signIn("login", value);
             router.push("/");
         },
     });
@@ -31,7 +28,7 @@ export const useReactForm = () => {
             onChange: SignUpFormSchema,
         },
         onSubmit: async ({ value }) => {
-            await register.mutateAsync(value);
+            signIn("register", value);
             router.push("/");
         },
     });
