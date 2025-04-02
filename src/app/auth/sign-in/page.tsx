@@ -111,7 +111,7 @@ const SignInPage = () => {
                         </Link>
                     </div>
                     <Button
-                        variant="outline"
+                        variant="default"
                         className="w-full cursor-pointer"
                         onClick={() => loginForm.handleSubmit()}
                     >

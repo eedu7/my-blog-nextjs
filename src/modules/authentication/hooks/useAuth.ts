@@ -6,7 +6,7 @@ import { AuthResponse } from "@/modules/authentication/api/auth.types";
 
 const saveAuthData = (data: AuthResponse) => {
     setCookie("_JWT_ACCESS_TOKEN", data.token.access_token, {
-        maxAge: data.token.expiry_minutes * 60, // Converting into seconds
+        maxAge: data.token.expiry_minutes, // Converting into seconds
         secure: true,
         sameSite: "strict",
     });
@@ -14,10 +14,25 @@ const saveAuthData = (data: AuthResponse) => {
         secure: true,
         sameSite: "strict",
     });
-    setCookie("_USER_DATA", JSON.stringify(data.user), {
+    setCookie("_AUTH_USER_USERNAME", data.user.username, {
         secure: true,
         sameSite: "strict",
-        maxAge: data.token.expiry_minutes * 60,
+        maxAge: data.token.expiry_minutes,
+    });
+    setCookie("_AUTH_USER_EMAIL", data.user.email, {
+        secure: true,
+        sameSite: "strict",
+        maxAge: data.token.expiry_minutes,
+    });
+    setCookie("_AUTH_USER_UUID", data.user.uuid, {
+        secure: true,
+        sameSite: "strict",
+        maxAge: data.token.expiry_minutes,
+    });
+    setCookie("_AUTH_EXPIRE", data.token.expiry_minutes, {
+        secure: true,
+        sameSite: "strict",
+        maxAge: 1,
     });
 };
 
