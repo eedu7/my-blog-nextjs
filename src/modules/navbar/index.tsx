@@ -15,18 +15,18 @@ import "./style.css";
 import { signOut, useSession } from "next-auth/react";
 
 export const Navbar = () => {
-
-    const { data: session, status, update } = useSession();
-
-
+    // @typescript-eslint/no-unused-vars
+    const { data: session, status } = useSession();
 
     if (status === "authenticated") {
-        return <AuthenticatedNavbar
-            email={session?.user?.email as string}
-            id={session?.user?.id as string}
-            name={session?.user?.name as string}
-            image={session?.user?.image as string}
-        />;
+        return (
+            <AuthenticatedNavbar
+                email={session?.user?.email as string}
+                id={session?.user?.id as string}
+                name={session?.user?.name as string}
+                image={session?.user?.image as string}
+            />
+        );
     } else {
         return (
             <nav className="space-x-4 text-sm text-green-800">
@@ -48,9 +48,9 @@ interface AuthenticatedNavbarProps {
     image?: string;
 }
 
-const AuthenticatedNavbar = ({id, name, email, image}: AuthenticatedNavbarProps) => {
+const AuthenticatedNavbar = ({ id, name, email, image }: AuthenticatedNavbarProps) => {
     return (
-        <nav className="flex items-center space-x-4">
+        <nav className="flex items-center space-x-4" id={id}>
             <div className="flex items-center gap-2">
                 <input type="checkbox" id="toggle" />
                 <label htmlFor="toggle" className="cursor-pointer">
@@ -73,15 +73,17 @@ const AuthenticatedNavbar = ({id, name, email, image}: AuthenticatedNavbarProps)
                 <BellIcon className="size-6 text-gray-400 hover:text-gray-600" />
             </Link>
             <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger className="p-4">
                     <Avatar>
                         <AvatarImage src={image} />
+                        <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="mx-4 mt-2 p-2">
                     <DropdownMenuItem className="flex items-center space-x-2 p-2">
                         <Avatar className="size-14 bg-rose-400">
-                        <AvatarImage src={image} />
+                            <AvatarImage src={image} />
+                            <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col gap-1">
                             {/* TODO: Add links */}
@@ -93,7 +95,7 @@ const AuthenticatedNavbar = ({id, name, email, image}: AuthenticatedNavbarProps)
                             </Link>
                             <Link
                                 href="#"
-                                className="text-xm  text-gray-600 underline-offset-2 transition-all hover:underline"
+                                className="text-xm text-gray-600 underline-offset-2 transition-all hover:underline"
                             >
                                 {/*TODO: Change this to username*/}
                                 {email}
@@ -127,7 +129,7 @@ const AuthenticatedNavbar = ({id, name, email, image}: AuthenticatedNavbarProps)
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                             className="cursor-pointer"
-                            onClick={ async () => {
+                            onClick={async () => {
                                 await signOut();
                             }}
                         >
