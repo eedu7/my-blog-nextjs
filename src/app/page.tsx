@@ -1,27 +1,13 @@
-"use client";
 import { Header } from "@/modules/header";
-import { SessionProvider, useSession } from "next-auth/react";
+import React from "react";
+import { Maincomponent } from "@/app/mainComponent";
 
 export default function Home() {
     return (
         <>
             <Header />
-            <SessionProvider>
-                <main>
-                    <Maincomponent />
-                </main>
-            </SessionProvider>
+            <main>
+            </main>
         </>
     );
-}
-
-const Maincomponent = () => {
-    const { data: session, } = useSession();
-    console.table(session);
-    return (
-        <p>
-
-        </p>
-    )
-
 }

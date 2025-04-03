@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import { loginUser, registerUser } from "./modules/authentication/api/auth.api";
+import { axiosClient } from "@/service/api";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -34,7 +35,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                           }
                         : null;
                 } catch (error) {
-                    console.error(error)
+                    console.error(error);
                     throw new Error("Invalid credentials");
                 }
             },
@@ -63,10 +64,65 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                           }
                         : null;
                 } catch (error) {
-                    console.error(error)
+                    console.error(error);
                     throw new Error("Invalid credentials");
                 }
             },
         }),
     ],
+    callbacks: {
+        async jwt({ token, user, account }) {
+            // Initial sign in
+            if (account && user) {
+                // If using credentials provider
+                if (account.provider === "credentials") {
+                    token.accessToken = (user as any).token;
+                    token.id = user.id;
+                }
+                // If using OAuth provider, send user data to your backend
+                else if (account.provider) {
+                    try {
+                        const response = await fetch("http://localhost:8000/v1/auth/social-login", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                email: user.email,
+                                username: user.name,
+                                image_url: user.image,
+                                provider: account.provider,
+                                provider_id: account.providerAccountId,
+                            }),
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                            throw new Error(data.message || "Social login failed");
+                        }
+
+                        token.accessToken = data.acess_token;
+                        // TODO: added the user id
+                        // token.id = data.user.id;
+                        token.id = data.access_token;
+
+                    } catch (error) {
+                        console.error("Social login error:", error);
+                    }
+                }
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            if (token) {
+                session.user.id = token.id as string;
+                session.accessToken = token.accessToken as string;
+            }
+            return session;
+        },
+    },
+    session: {
+        strategy: "jwt"
+    }
 });
