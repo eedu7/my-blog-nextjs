@@ -14,7 +14,12 @@ export const useReactForm = () => {
             onChange: SignInFormSchema,
         },
         onSubmit: async ({ value }) => {
-            await signIn("login", value);
+            await signIn("login", {
+                redirect: false,
+                redirectTo: process.env.NEXT_AUTH_SIGN_IN_REDIRECT_URL,
+                email: value.email,
+                password: value.password,
+            });
             router.push("/");
         },
     });
@@ -28,7 +33,13 @@ export const useReactForm = () => {
             onChange: SignUpFormSchema,
         },
         onSubmit: async ({ value }) => {
-            await signIn("register", value);
+            await signIn("register", {
+                redirect: false,
+                redirectTo: process.env.NEXT_AUTH_SIGN_UP_REDIRECT_URL,
+                email: value.email,
+                password: value.password,
+                username: value.username,
+            });
             router.push("/");
         },
     });

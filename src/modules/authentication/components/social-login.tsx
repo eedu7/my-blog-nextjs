@@ -12,7 +12,9 @@ export const SocialLogin = ({name}: SocialLoginProps) => {
         <div className="flex flex-col gap-2">
             <Button
                 variant="outline"
-                onClick={() => signIn("google")}
+                onClick={() => signIn("google", {
+                    redirectTo: process.env.NEXT_AUTH_SIGN_IN_REDIRECT_URL
+                })}
                 className="cursor-pointer"
             >
                 <RiGoogleFill
@@ -25,7 +27,9 @@ export const SocialLogin = ({name}: SocialLoginProps) => {
 
             <Button
                 variant="outline"
-                onClick={() => signIn("github")}
+                onClick={() => signIn("github", {
+                    redirectTo: process.env.NEXT_AUTH_SIGN_IN_REDIRECT_URL
+                })}
                 className="cursor-pointer"
             >
                 <RiGithubFill

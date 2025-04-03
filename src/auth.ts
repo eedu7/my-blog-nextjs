@@ -3,7 +3,6 @@ import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import { loginUser, registerUser } from "./modules/authentication/api/auth.api";
-import { axiosClient } from "@/service/api";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -106,7 +105,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         // TODO: added the user id
                         // token.id = data.user.id;
                         token.id = data.access_token;
-
                     } catch (error) {
                         console.error("Social login error:", error);
                     }
@@ -123,6 +121,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
     },
     session: {
-        strategy: "jwt"
-    }
+        strategy: "jwt",
+    },
 });
