@@ -12,14 +12,21 @@ import { BellIcon, BookMarkedIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import "./style.css";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 export const Navbar = () => {
-    const { data: status } = useSession();
 
-    // @ts-expect-error "Session can be null"
+    const { data: session, status, update } = useSession();
+
+
+
     if (status === "authenticated") {
-        return <AuthenticatedNavbar />;
+        return <AuthenticatedNavbar
+            email={session?.user?.email as string}
+            id={session?.user?.id as string}
+            name={session?.user?.name as string}
+            image={session?.user?.image as string}
+        />;
     } else {
         return (
             <nav className="space-x-4 text-sm text-green-800">
@@ -34,7 +41,14 @@ export const Navbar = () => {
     }
 };
 
-const AuthenticatedNavbar = () => {
+interface AuthenticatedNavbarProps {
+    id?: string;
+    name?: string;
+    email?: string;
+    image?: string;
+}
+
+const AuthenticatedNavbar = ({id, name, email, image}: AuthenticatedNavbarProps) => {
     return (
         <nav className="flex items-center space-x-4">
             <div className="flex items-center gap-2">
@@ -61,15 +75,13 @@ const AuthenticatedNavbar = () => {
             <DropdownMenu>
                 <DropdownMenuTrigger>
                     <Avatar>
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>CN</AvatarFallback>
+                        <AvatarImage src={image} />
                     </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="mx-4 mt-2 p-2">
                     <DropdownMenuItem className="flex items-center space-x-2 p-2">
                         <Avatar className="size-14 bg-rose-400">
-                            <AvatarImage src="https://github.com/shadcn.png" />
-                            <AvatarFallback>CN</AvatarFallback>
+                        <AvatarImage src={image} />
                         </Avatar>
                         <div className="flex flex-col gap-1">
                             {/* TODO: Add links */}
@@ -77,13 +89,14 @@ const AuthenticatedNavbar = () => {
                                 href="#"
                                 className="text-sm font-semibold tracking-wider hover:text-gray-600"
                             >
-                                Full Name
+                                {name}
                             </Link>
                             <Link
                                 href="#"
-                                className="text-sm tracking-widest text-gray-600 underline-offset-2 transition-all hover:underline"
+                                className="text-xm  text-gray-600 underline-offset-2 transition-all hover:underline"
                             >
-                                @username
+                                {/*TODO: Change this to username*/}
+                                {email}
                             </Link>
                         </div>
                     </DropdownMenuItem>
@@ -114,8 +127,8 @@ const AuthenticatedNavbar = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                             className="cursor-pointer"
-                            onClick={() => {
-                                // signOut();
+                            onClick={ async () => {
+                                await signOut();
                             }}
                         >
                             Sign out
