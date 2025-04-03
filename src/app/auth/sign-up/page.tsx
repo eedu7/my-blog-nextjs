@@ -18,8 +18,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SIGN_IN_LINK } from "@/data/navigation-links";
 import { checkUserExist } from "@/modules/authentication/api/auth.api";
-import { AuthCardConsentParagrapht } from "@/modules/authentication/components/auth-card-consent";
+import {
+    AuthCardConsentParagraph,
+} from "@/modules/authentication/components/auth-card-consent";
 import { useReactForm } from "@/modules/authentication/hooks/useReactForm";
+import { Separator } from "@/components/ui/separator";
+import { SocialLogin } from "@/modules/authentication/components/social-login";
 
 const SignUpPage = () => {
     const { registerForm } = useReactForm();
@@ -166,7 +170,9 @@ const SignUpPage = () => {
                     >
                         Sign Up
                     </Button>
-                    <AuthCardConsentParagrapht />
+                    <Separator />
+                    <SocialLogin name="Sign up"/>
+                    <AuthCardConsentParagraph name="Sign up" />
                 </div>
             </CardFooter>
         </Card>

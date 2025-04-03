@@ -14,7 +14,7 @@ export const useReactForm = () => {
             onChange: SignInFormSchema,
         },
         onSubmit: async ({ value }) => {
-            signIn("login", value);
+            await signIn("login", value);
             router.push("/");
         },
     });
@@ -28,7 +28,7 @@ export const useReactForm = () => {
             onChange: SignUpFormSchema,
         },
         onSubmit: async ({ value }) => {
-            signIn("register", value);
+            await signIn("register", value);
             router.push("/");
         },
     });

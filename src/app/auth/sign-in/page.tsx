@@ -17,13 +17,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SIGN_UP_LINK } from "@/data/navigation-links";
-import { AuthCardConsentParagrapht } from "@/modules/authentication/components/auth-card-consent";
+import { AuthCardConsentParagraph } from "@/modules/authentication/components/auth-card-consent";
 import { useReactForm } from "@/modules/authentication/hooks/useReactForm";
 
-import { RiGithubFill, RiGoogleFill } from "@remixicon/react";
-
 import { Separator } from "@/components/ui/separator";
-import { signIn } from "next-auth/react";
+import { SocialLogin } from "@/modules/authentication/components/social-login";
 
 const SignInPage = () => {
     const { loginForm } = useReactForm();
@@ -124,35 +122,9 @@ const SignInPage = () => {
                     </Button>
                     <Separator />
 
-                    <div className="flex flex-col gap-2">
-                        <Button
-                            variant="outline"
-                            onClick={() => signIn("google")}
-                            className="cursor-pointer"
-                        >
-                            <RiGoogleFill
-                                className="me-1 text-[#DB4437] dark:text-white/60"
-                                size={16}
-                                aria-hidden="true"
-                            />
-                            Login with Google
-                        </Button>
+                    <SocialLogin name="Log in" />
 
-                        <Button
-                            variant="outline"
-                            onClick={() => signIn("github")}
-                            className="cursor-pointer"
-                        >
-                            <RiGithubFill
-                                className="me-1 text-[#333333] dark:text-white/60"
-                                size={16}
-                                aria-hidden="true"
-                            />
-                            Login with GitHub
-                        </Button>
-                    </div>
-
-                    <AuthCardConsentParagrapht />
+                    <AuthCardConsentParagraph name="Log in" />
                 </div>
             </CardFooter>
         </Card>

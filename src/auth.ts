@@ -20,9 +20,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             authorize: async (credentials) => {
                 try {
                     const user = await registerUser({
-                        email: credentials.email,
-                        password: credentials.password,
-                        username: credentials.username,
+                        email: credentials.email as string,
+                        password: credentials.password as string,
+                        username: credentials.username as string,
                     });
 
                     return user
@@ -34,6 +34,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                           }
                         : null;
                 } catch (error) {
+                    console.error(error)
                     throw new Error("Invalid credentials");
                 }
             },
@@ -49,8 +50,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             authorize: async (credentials) => {
                 try {
                     const user = await loginUser({
-                        email: credentials.email,
-                        password: credentials.password,
+                        email: credentials.email as string,
+                        password: credentials.password as string,
                     });
 
                     return user
@@ -62,6 +63,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                           }
                         : null;
                 } catch (error) {
+                    console.error(error)
                     throw new Error("Invalid credentials");
                 }
             },
